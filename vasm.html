@@ -7,8 +7,83 @@
 
 <h1>VASM Setup</h1>
 <p>
-A copy of the vasm assembler can be obtained <a href="http://www.compilers.de/vasm.html">here</a>
+A copy of the vasm assembler can be obtained from the project website <a href="http://www.compilers.de/vasm.html">here</a>
 </p>
+
+<p>
+For purposes of these guides, I will be using the "oldstyle" variants of asm. 
+</p>
+<p>
+Start by creating a project directory containing "src" and "out" directories. The "out" directory will contain our program binaries, and the "src" directory will contain our code. Utilizing the command line:
+</p>
+
+<table border="1"><tr><td><pre><code>
+&gt; mkdir my_project
+&gt; cd my_project
+&gt; mkdir src
+&gt; mkdir out
+</code></pre></td></tr></table>
+
+
+<p>
+Create a text file for holding the main assembly code, by default I will be using "main.asm"
+</p>
+<p>
+Once the file is filled, it can be assembled utilising something like
+</p>
+
+<h2>Windows</h2>
+<table border="1"><tr><td><pre><code>
+&gt; c:\vasm\vasmz80_oldstyle_Win64\vasmz80_oldstyle.exe -chklabels -nocase -Dvasm=1 -Fbin -o .\out\com.sms main.asm
+</code></pre></td></tr></table>
+<p>
+This will build the "main.asm" file and output the compiled binary into "rom.bin" inside the "out" folder
+</p>
+
+<h2>Linux</h2>
+<p>
+Linux builds are reccomended to build from source and install.
+</p>
+<p>
+First download and extract the compressed vasm file:
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; tar xvfz vasm.tar.gz
+</code></pre></td></tr></table>
+
+<p>
+Then compile it with the architecture and syntax from within the "vasm" directory. 
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; cd vasm
+&gt; make CPU=m68k SYNTAX=mot
+</code></pre></td></tr></table>
+
+<p>
+If the necessary build tools are not installed, they will need to be installed manually. 
+</p>
+<p>
+Next, copy the build files into the install location, like:
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; sudo mkdir -p /opt/vbcc/bin
+&gt; sudo cp vasmm68k_mot vobjdump /opt/vbcc/bin
+</code></pre></td></tr></table>
+
+<p>
+Then add an environment variable to reference from the build process. Notmally this is added to the the "~/.bashrc" file:
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; export VBCC=/opt/vbcc
+</code></pre></td></tr></table>
+
+
+
+<table border="1"><tr><td><pre><code>
+#!/bin/bash
+vasmz80_oldstyle -chklabels -nocase -Dvasm=1 -Fbin -o ./out/rom.sms main.asm
+</code></pre></td></tr></table>
+
 
 </body>
 </html>

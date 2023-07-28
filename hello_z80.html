@@ -6,25 +6,67 @@
 <body>
 
 <h1>SG-1000 Tutorial</h1>
-<table border="1"><tr><td>
-<pre>
-<code>
-    org &0000
-; first 128 bytes are RSTs and interrupts, fill with RET's (&C9)
-    jr ProgramStart ;&0000 - RST0
+
+The two three things you're going to want to have on hand are:
+
+<ol>
+    <li>
+        the <a href="https://www.zilog.com/docs/z80/um0080.pdf">Z80 Manual</a> <a href="z80_manual.pdf">mirror</a></li>
+    <li>the <a href="http://sun.hasenbraten.de/vasm/release/vasm.pdf">VASM Manual</a> <a href="http://sun.hasenbraten.de/vasm/release/vasm.html">online</a> <a href="vasm_manual.pdf">mirror</a> </li>
+</ol>
+
+<p>
+There are numerous helpful cheat-sheets and guides out there, but in the end the manuals don't leave anything out.
+</p>
+<p>
+Second, you are going to want an emulator OR some sort of programmable cartridge WITH a Sega SG-1000, SC-3000, Master System/Mk3, or Genesis/Mega Drive (or clone system).
+</p>
+<p>
+Emulators have the benefit of often being free, and commonly offering debug options, but are fairly likely to have bugs/implementation issues compared to real hardware. Clone consoles are prone to the same problems. FPGA-based clone systems are less prone to such issues, but are still often imperfect. 
+</p>
+<p>
+To start off, I recommend the <a href="https://www.smspower.org/meka/">MEKA</a> emulator (<a href="https://www.smspower.org/meka/download.shtml">windows binary</a> or <a href="https://github.com/ocornut/meka">build from source for linux</a>) which offers robust debugging options.
+</p>
+<p>
+If VASM is not already set up, please reference the <a href="vasm.html">VASM Setup Process</a>
+</p>
+<p>
+Commands largely fall into two categories: 
+</p>
+<ol>
+    <li>instructions - represent native processor commands, native to the processor type</li>
+    <li>directives - provide directions to the assembler, can vary between assemblers</li>
+</ol>
+
+<p>
+I will provide a list of new commands with their type and general usage as they are added to each program. Referencing the manuals is still recommended. 
+</p>
+<p>
+Let's get started with our first Z80 program. In the file "main.asm" in the "src" directory, enter the following text:
+</p>
+<p>
+
+
+[main.asm]
+
+<table border="1"><tr><td><pre><code>
+<font color="#FF0000">
+    org $0000
+; first 128 bytes are RSTs and interrupts, fill with RET's ($C9)
+    jr ProgramStart ;$0000 - RST0
     ;note: "ds" is blk/block fill of memory
-    ds 6,&C9    ;&0002 - RST0, Reset
-    ds 8,&C9    ;&0008 - RST1
-    ds 8,&C9    ;&0010 - RST2
-    ds 8,&C9    ;&0018 - RST3
-    ds 8,&C9    ;&0020 - RST4
-    ds 8,&C9    ;&0028 - RST5
-    ds 8,&C9    ;&0030 - RST6
-    ds 8,&C9    ;&0038 - RST7, IM1 (interrupt mode 1, usualy VBLANK)
+    ds 6,$C9    ;$0002 - RST0, Reset
+    ds 8,$C9    ;$0008 - RST1
+    ds 8,$C9    ;$0010 - RST2
+    ds 8,$C9    ;$0018 - RST3
+    ds 8,$C9    ;$0020 - RST4
+    ds 8,$C9    ;$0028 - RST5
+    ds 8,$C9    ;$0030 - RST6
+    ds 8,$C9    ;$0038 - RST7, IM1 (interrupt mode 1, usualy VBLANK)
                 ;        rom mapped on SMS
     ;jp InterruptHandler
-    ds 38,&C9   ;&0066 - NMI, hardware interrupt, Pause button
-    ds 26,&C9   ;&0080
+    ds 38,$C9   ;$0066 - NMI, hardware interrupt, Pause button
+    ds 26,$C9   ;$0080
 
 
 
@@ -32,7 +74,7 @@
 ProgramStart:
     di              ; disable interrupts
     im 1            ; interrupt mode 1
-    ld sp, &dff0     ; default stack pointer
+    ld sp, $dff0     ; default stack pointer
 
 
     ;otir    ; Out (c),(h1).. inc HL... decB, djnz
@@ -44,10 +86,163 @@ MainLoop:
     jp MainLoop
     di ;disable interrupts
     halt
+</font>
+</code></pre></td></tr></table>
 
-</code>
+<p>
+As a reminder, for purposes of this tutorial your file structure should look somehting like:
+</p>
+<p>
+<pre>
+&lt;project&gt;
+-&lt;out&gt;
+-&lt;src&gt;
+--main.asm
+-build.bat
+-build.sh
+</p>
 </pre>
-</td></tr></table>
+<p>
+Where the "build.bat" and "build.sh" files should contain scripts for executing the assembly process for windows and linux respectively
+</p>
+<p>
+build.bat (windows):
+</p>
+<table border="1"><tr><td><pre><code>
+c:\vasm\vasmz80_oldstyle_Win64\vasmz80_oldstyle.exe -chklabels -nocase -Dvasm=1 -Fbin -o .\out\rom.bin .\src\main.asm
+</code></pre></td></tr></table>
+<p>
+build.sh (linux):
+</p>
+<table border="1"><tr><td><pre><code>
+#!/bin/bash
+vasmz80_oldstyle -chklabels -nocase -Dvasm=1 -Fbin -o ./out/rom.bin ./src/main.asm
+</code></pre></td></tr></table>
+<p>
+You can also view this example in the git repo <a href="">here</a>
+</p>
+<p>
+Try executing the scripts from the command line to build the "main.asm" into a proper binary files, stored in "./out/rom.bin"
+</p>
+<p>
+Windows:
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; ./build.bat
+</code></pre></td></tr></table>
+<p>
+Linux:
+</p>
+<table border="1"><tr><td><pre><code>
+&gt; ./build.sh
+</code></pre></td></tr></table>
+<p>
+If the file builds correctly, you should see output something like:
+</p>
+<table border="1"><tr><td><pre><code>
+    vasm 1.8e (c) in 2002-2018 Volker Barthelmann                                 
+    vasm 8080/gbz80/z80/z180/rcmX000 cpu backend 0.3 (c) 2007,2009 Dominic Morris 
+    vasm oldstyle syntax module 0.13f (c) 2002-2018 Frank Wille                   
+    vasm binary output module 1.8a (c) 2002-2009,2013,2015,2017 Volker Barthelmann
+                                                                                  
+    seg0(acrwx1):            139 bytes                                            
+    seg7ff0(acrwx1):                  16 bytes                                    
+</code></pre></td></tr></table>
+</p>
+<p>
+Before executing the binary file, let's discuss a bit about the commands we used in this example. 
+</p>
+<p>
+----<br />
+DIRECTIVES<br />
+----<br />
+<code>ORG [#]</code> - "ORG" followed by a number sets the address the following code will be stored at. In this case, at address zero<br />
+<code>DS <exp>[,<fill>]</code> - will fill <exp> bytes of the <fill> value (or zero) into the code<br />
+</p>
+<p>
+----<br />
+INSTRUCTIONS<br />
+----<br />
+<code>RET</code> ($C9) - returns to the original caller<br />
+<code>DI</code> ($F3) - disables maskable interrupt<br />
+<code>IM 1</code> ($ED $56) - sets processor to Interrupt Mode 1, processor responds to an interrupt by executing a restart at address <code>$0038</code><br />
+<code>LD SP, nn</code> ($31)- load "nn" into the stack pointer (SP) <br />
+<code>JP nn</code> ($C3) - jump to location<br />
+<code>JR e</code> ($18) - jumps to the program counter offset defined by "e". It differs from <code>JP</code> in that <code>JR</code>'s destination must be withing 128 bytes<br />
+<code>HALT</code> ($76) - suspends CPU operation until interrupt or reset<br />
+</p>
+<p>
+!!! Please note that hex values can be identified by a preceeding "&amp;" or "$" (ex: <code>$80</code>). Binary values are preceeded by a "%" (ex: <code>%10000000</code>). 
+</p>
+<p>
+The first line we have is:
+</p>
+<table border="1"><tr><td><pre><code>
+org $0000
+</code></pre></td></tr></table>
+<p>
+Which is an assembler directing, telling the assembler "the following code will start at this location", <code>$0000</code> being the very first line, counting up from "0".
+</p>
+
+<p>
+The next command:
+</p>
+<table border="1"><tr><td><pre><code>
+    jr ProgramStart
+</code></pre></td></tr></table>
+<p>
+... represents <code>JR</code>, a jump command. Functionally, JR will jump to a program location within 128 bytes, in our case the start of our program. We are intentionally skipping executing the next few lines of code execution, which are going to be reserved. 
+</p>
+
+<p>
+The next few locations represent restart commands on the Z80 processer, which can be called with the <code>RST</code> command. The beginning memory locaitons represent the callable locations of this command. 
+</p>
+<p>
+The availible addresses are:
+</p>
+<code>$0000, $0008, $0010, $0018, $0020, $0028, $0030, $0038</code>
+
+The <code>DS</code> command will fill a certain number of blocks with a value. In this case, I am using the <code>$C9</code> hex value, which corresponds to the <code>RET</code> command. <code>RET</code> will return to the previously called location. This serves as a good placeholder value for the reset locations until callbacks are added as necessary. 
+
+<p>
+So...
+</p>
+<table border="1"><tr><td><pre><code>                                                                                                                                                                    
+    ds 6,$C9                                                                                                                                                                                          
+</code></pre></td></tr></table>
+<p>
+... will insert six instances of <code>$C9</code> into the code, representing <code>RET</code> each time. And accidental <code>RST</code> calls to these locations will simply return back to the original caller. 
+</p>
+<p>
+We will also map out <code>RET</code> blocks through <code>$0066</code> and <code>$0080</code> for later use.
+</p>
+<p>
+Our main program code wills start at the:
+</p>
+<table border="1"><tr><td><pre><code>
+ProgramStart:
+</code></pre></td></tr></table>
+
+<p>
+...label, at location <code>$0080</code>
+</p>
+
+Getting started, we first want to disable all interrupts, then set the interrupt mode to "1". Interrupt Mode 1 means "processor responds to an interrupt by executing a restart at address <code>$0038</code>".
+
+<table border="1"><tr><td><pre><code>
+    di              ; disable interrupts    
+    im 1            ; interrupt mode 1      
+</code></pre></td></tr></table>
+
+Next we load (<code>LD</code>) a default stack pointer into the stack pointer register(<code>SP</code>). The default value will be <code>dff0</code>
+
+<table border="1"><tr><td><pre><code>
+    ld sp, $dff0     ; default stack pointer
+</code></pre></td></tr></table>
+
+
+
+
 
 </body>
 </html>
