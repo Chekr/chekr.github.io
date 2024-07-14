@@ -10,4 +10,4 @@
 | 8 | GND |  |
 | 9 | TR | 2/A+C |
 
-* TH is disconnected on the SG-1000 and SG-3000
+\* TH is disconnected on the SG-1000 and SG-3000
