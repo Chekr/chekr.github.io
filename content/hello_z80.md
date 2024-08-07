@@ -3,7 +3,7 @@
 
 The two three things you're going to want to have on hand are:
 
-1. the [Z80 Manual](https://www.zilog.com/docs/z80/um0080.pdf">Z80 Manual)[mirror](z80_manual.pdf)
+1. the [Z80 Manual](https://www.zilog.com/docs/z80/um0080.pdf)[mirror](z80_manual.pdf)
 2. the [VASM Manual](http://sun.hasenbraten.de/vasm/release/vasm.pdf)[online](http://sun.hasenbraten.de/vasm/release/vasm.html)[mirror](vasm_manual.pdf)
 
 There are numerous helpful cheat-sheets and guides out there, but in the end the manuals don't leave anything out.
