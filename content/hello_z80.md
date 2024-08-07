@@ -1,4 +1,4 @@
-#SG-1000 Tutorial
+# SG-1000 Tutorial
 
 
 The two three things you're going to want to have on hand are:
@@ -112,12 +112,12 @@ seg7ff0(acrwx1):                  16 bytes
 Before executing the binary file, let's discuss a bit about the commands we used in this example. 
 
 
-###DIRECTIVES
+### DIRECTIVES
 
 `ORG [#]` - "ORG" followed by a number sets the address the following code will be stored at. In this case, at address zero
 `DS <exp>[,<fill>]` - will fill <exp> bytes of the <fill> value (or zero) into the code
 
-###INSTRUCTIONS
+### INSTRUCTIONS
 `RET` ($C9) - returns to the original caller
 `DI` ($F3) - disables maskable interrupt
 `IM 1` ($ED $56) - sets processor to Interrupt Mode 1, processor responds to an interrupt by executing a restart at address `$0038`
@@ -177,7 +177,3 @@ Next we load `LD` a default stack pointer into the stack pointer register(`SP`).
 
 
 
-
-
-</body>
-</html>

@@ -1,11 +1,11 @@
-#Test Page
+# Test Page
 
 
-###Consoles
+### Consoles
 
 [Console Evolution](console_evolution.md)
 
-###Development
+### Development
 
 -Setup
 --[vasm compiler](vasm.md)
@@ -21,7 +21,7 @@
 --Sega Mega Drive/Genesis</li>
 -ATTiny
 
-###Consoles
+### Consoles
 -SC-1000/SG-3000
 -MK3/Master System
 -Genesis/Mega Drive
@@ -29,7 +29,7 @@
 -Dreamcast/Naomi
 -Naomi 2
 
-###Processors
+### Processors
 Zilog Z80
 Motorola 68000
 Hitachi SH2
@@ -37,7 +37,7 @@ Hitachi SH4
 RISC V
 Atmel AVR
 
-###GPUs
+### GPUs
 -Texas Instruments TMS9918a
 -Sega  Sega 315‑5124 (Yamaha YM2602), Sega 315‑5246 (NEC UPD9004G)
 -Sega 315‑5313 VDP (Yamaha YM7101)
