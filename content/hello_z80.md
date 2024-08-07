@@ -3,8 +3,8 @@
 
 The two three things you're going to want to have on hand are:
 
-1. the [Z80 Manual](https://www.zilog.com/docs/z80/um0080.pdf)[mirror](z80_manual.pdf)
-2. the [VASM Manual](http://sun.hasenbraten.de/vasm/release/vasm.pdf)[online](http://sun.hasenbraten.de/vasm/release/vasm.html)[mirror](vasm_manual.pdf)
+1. the [Z80 Manual](https://www.zilog.com/docs/z80/um0080.pdf) [mirror](z80_manual.pdf)
+2. the [VASM Manual](http://sun.hasenbraten.de/vasm/release/vasm.pdf) [online](http://sun.hasenbraten.de/vasm/release/vasm.html) [mirror](vasm_manual.pdf)
 
 There are numerous helpful cheat-sheets and guides out there, but in the end the manuals don't leave anything out.
 
@@ -12,7 +12,7 @@ Second, you are going to want an emulator OR some sort of programmable cartridge
 
 Emulators have the benefit of often being free, and commonly offering debug options, but are fairly likely to have bugs/implementation issues compared to real hardware. Clone consoles are prone to the same problems. FPGA-based clone systems are less prone to such issues, but are still often imperfect. 
 
-To start off, I recommend the [MEKA](https://www.smspower.org/meka/) emulator [windows binary](https://www.smspower.org/meka/download.shtml)[build source for linux](https://github.com/ocornut/meka) which offers robust debugging options.
+To start off, I recommend the [MEKA](https://www.smspower.org/meka/) emulator [windows binary](https://www.smspower.org/meka/download.shtml) [build source for linux](https://github.com/ocornut/meka) which offers robust debugging options.
 
 If VASM is not already set up, please reference the [VASM Setup Process](vasm.html)
 
